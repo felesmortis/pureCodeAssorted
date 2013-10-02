@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,7 +70,7 @@ namespace CellularAutonomaton
             int index = 0;
             foreach (int p in patternNums)
             {
-
+                
                 for (int i = 0; i < patt.Length; i++)
                 {
                     if (p == patt[i].val)
@@ -82,17 +82,27 @@ namespace CellularAutonomaton
         }
         static string cellular_automaton(String current, int generation)
         {
-
+            
             if (generation < 1)
                 return current;
-
+            
             //String[] currentRepX = new String[patternNums.Length];
 
-            String final = current.ElementAt(0).ToString();
-            for (int i = 1; i < current.Length - 1; i++)
+            String final = "";
+            for (int i = 0; i < current.Length; i++)
             {
                 String temp = "";
-                temp = current.Substring((i - 1), 3);
+                try
+                {
+                    temp = current.Substring((i - 1), 3);
+                }
+                catch (Exception)
+                {
+                    if (i == 0)
+                        temp = current.Last() + current.Substring(i, 2);
+                    else
+                        temp = current.Substring(i-1, 2) + current.First();
+                }
                 foreach (patVal p in patt)
                 {
                     if (p.pat == temp)
@@ -102,11 +112,12 @@ namespace CellularAutonomaton
                             final += "x";
                         else
                             final += ".";
+                        
                     }
                 }
             }
-
-            final += current.ElementAt(current.Length - 1).ToString();
+            
+            //final += current.ElementAt(current.Length-1).ToString();
             //Console.WriteLine(final);
             return cellular_automaton(final, --generation);
         }
