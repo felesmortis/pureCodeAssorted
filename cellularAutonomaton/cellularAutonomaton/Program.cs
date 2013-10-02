@@ -40,17 +40,26 @@ namespace CellularAutonomaton
         static void Main(string[] args)
         {
             init();
-            foreach (patVal p in patt)
+            /*foreach (patVal p in patt)
             {
                 Console.WriteLine(p.pat + " " + p.val);
             }
             foreach (int i in getPattern(255))
             {
                 Console.WriteLine(i);
-            }
-            Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 1));
+            }*/
+            Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
             Console.WriteLine(cellular_automaton("...x....", 125, 1));
+            Console.WriteLine(cellular_automaton("...x....", 125, 2));
+            Console.WriteLine(cellular_automaton("...x....", 125, 3));
+            Console.WriteLine(cellular_automaton("...x....", 125, 4));
+            Console.WriteLine(cellular_automaton("...x....", 125, 5));
+            Console.WriteLine(cellular_automaton("...x....", 125, 6));
+            Console.WriteLine(cellular_automaton("...x....", 125, 7));
+            Console.WriteLine(cellular_automaton("...x....", 125, 8));
+            Console.WriteLine(cellular_automaton("...x....", 125, 9));
+            Console.WriteLine(cellular_automaton("...x....", 125, 10));
             Console.WriteLine(cellular_automaton("...........x...........", 142, 10));
             Console.ReadLine();
         }
@@ -98,7 +107,7 @@ namespace CellularAutonomaton
             }
 
             final += current.ElementAt(current.Length - 1).ToString();
-            Console.WriteLine(final);
+            //Console.WriteLine(final);
             return cellular_automaton(final, --generation);
         }
         static int[] getPattern(int i)
