@@ -1,0 +1,8 @@
+C:\Users\Daneil\AppData\Local\Temporary Projects\radix sort\bin\Debug\radix sort.exe
+C:\Users\Daneil\AppData\Local\Temporary Projects\radix sort\bin\Debug\radix sort.pdb
+C:\Users\Daneil\AppData\Local\Temporary Projects\radix sort\obj\x86\Debug\radix sort.exe
+C:\Users\Daneil\AppData\Local\Temporary Projects\radix sort\obj\x86\Debug\radix sort.pdb
+C:\Users\Daneil\documents\visual studio 2010\Projects\radix sort\radix sort\obj\x86\Debug\radix sort.exe
+C:\Users\Daneil\documents\visual studio 2010\Projects\radix sort\radix sort\obj\x86\Debug\radix sort.pdb
+C:\Users\Daneil\documents\visual studio 2010\Projects\radix sort\radix sort\bin\Debug\radix sort.exe
+C:\Users\Daneil\documents\visual studio 2010\Projects\radix sort\radix sort\bin\Debug\radix sort.pdb
