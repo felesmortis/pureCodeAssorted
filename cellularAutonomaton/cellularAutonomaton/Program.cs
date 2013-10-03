@@ -7,7 +7,7 @@ namespace CellularAutonomaton
 {
     class Program
     {
-        static int NUMPATTERNS = 8;
+        static int NUMPATTERNS = pow2Greater(8);
         static int SIZEPATTERNS = Convert.ToString(NUMPATTERNS-1, 2).Length;
         struct patVal
         {
@@ -17,6 +17,15 @@ namespace CellularAutonomaton
         };
         
         static patVal[] patt = new patVal[NUMPATTERNS];
+        static int pow2Greater(int num)
+        {
+            int i = 1;
+            while (i < num)
+            {
+                i = i << 1;
+            }
+            return i;
+        }
         static void init()
         {
             //int i = 1;
@@ -95,7 +104,6 @@ namespace CellularAutonomaton
             setFalse();
             int[] patternNums = getPattern(pattern);
             int index = 0;
-            current = current.Replace('.', '_');
             foreach (int p in patternNums)
             {
                 for (int i = 0; i < patt.Length; i++)
