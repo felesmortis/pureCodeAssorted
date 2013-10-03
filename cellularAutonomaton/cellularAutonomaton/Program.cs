@@ -7,21 +7,35 @@ namespace CellularAutonomaton
 {
     class Program
     {
+        static int NUMPATTERNS = 8;
+        static int SIZEPATTERNS = Convert.ToString(NUMPATTERNS-1, 2).Length;
         struct patVal
         {
             public String pat;
             public int val;
             public bool repX;
         };
-
-        static patVal[] patt = new patVal[8];
+        
+        static patVal[] patt = new patVal[NUMPATTERNS];
         static void init()
         {
-            String[] list = {"...", "..x", ".x.",
-                           ".xx", "x..", "x.x",
-                           "xx.", "xxx" };
+            //int i = 1;
+            String[] list = new String[NUMPATTERNS];
+            for (int i = 0; i < NUMPATTERNS; i++)
+            {
+                String temp = Convert.ToString(i, 2).Replace('0', '.').Replace('1', 'x');
+                int n = temp.Length;
+
+                if (n < SIZEPATTERNS)
+                {
+                    for (int l = n; l < SIZEPATTERNS; l++)
+                        temp = '.' + temp;
+                }
+                list[i] = temp;
+                Console.WriteLine(temp);
+            }
             int pow = 1;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < NUMPATTERNS; i++)
             {
                 patt[i].pat = list[i];
                 patt[i].val = pow;
@@ -49,18 +63,31 @@ namespace CellularAutonomaton
                 Console.WriteLine(i);
             }*/
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
+            //Expected - xxxxxxx.. Actual xxxxxxx..
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
+            //Expected - .x..x.x.x Actual .x..x.x.x
             Console.WriteLine(cellular_automaton("...x....", 125, 1));
+            //Expected - xx.xxxxx Actual xx.xxxxx
             Console.WriteLine(cellular_automaton("...x....", 125, 2));
+            //Expected - .xxx.... Actual .xxx....
             Console.WriteLine(cellular_automaton("...x....", 125, 3));
+            //Expected - .x.xxxxx Actual .x.xxxxx
             Console.WriteLine(cellular_automaton("...x....", 125, 4));
+            //Expected - xxxx...x Actual xxxx...x
             Console.WriteLine(cellular_automaton("...x....", 125, 5));
+            //Expected - ...xxx.x Actual ...xxx.x
             Console.WriteLine(cellular_automaton("...x....", 125, 6));
+            //Expected - xx.x.xxx Actual xx.x.xxx
             Console.WriteLine(cellular_automaton("...x....", 125, 7));
+            //Expected - .xxxxx.. Actual .xxxxx..
             Console.WriteLine(cellular_automaton("...x....", 125, 8));
+            //Expected - .x...xxx Actual .x...xxx
             Console.WriteLine(cellular_automaton("...x....", 125, 9));
+            //Expected - xxxx.x.x Actual xxxx.x.x
             Console.WriteLine(cellular_automaton("...x....", 125, 10));
+            //Expected - ...xxxxx Actual ...xxxxx
             Console.WriteLine(cellular_automaton("...........x...........", 142, 10));
+            Console.WriteLine(cellular_automaton("xx.x..x.xx..x....x.xxx.xxxx", 127, 5));
             Console.ReadLine();
         }
         static string cellular_automaton(String current, int pattern, int generation)
@@ -68,9 +95,9 @@ namespace CellularAutonomaton
             setFalse();
             int[] patternNums = getPattern(pattern);
             int index = 0;
+            current = current.Replace('.', '_');
             foreach (int p in patternNums)
             {
-                
                 for (int i = 0; i < patt.Length; i++)
                 {
                     if (p == patt[i].val)
@@ -123,7 +150,7 @@ namespace CellularAutonomaton
         }
         static int[] getPattern(int i)
         {
-            int[] num = new int[8];
+            int[] num = new int[NUMPATTERNS];
             int index = 0;
             int n = 1;
             while (i > 0)
