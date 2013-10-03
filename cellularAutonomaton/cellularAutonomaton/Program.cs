@@ -8,7 +8,8 @@ namespace CellularAutonomaton
     class Program
     {
         static int NUMPATTERNS = pow2Greater(8);
-        static int SIZEPATTERNS = Convert.ToString(NUMPATTERNS-1, 2).Length;
+        static int SIZEPATTERNS = Convert.ToString(NUMPATTERNS - 1, 2).Length;
+        static long MAXPATSIZE = (int)Math.Pow(2, NUMPATTERNS);
         struct patVal
         {
             public String pat;
@@ -71,6 +72,7 @@ namespace CellularAutonomaton
             {
                 Console.WriteLine(i);
             }*/
+            
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
             //Expected - xxxxxxx.. Actual xxxxxxx..
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
@@ -97,9 +99,110 @@ namespace CellularAutonomaton
             //Expected - ...xxxxx Actual ...xxxxx
             Console.WriteLine(cellular_automaton("...........x...........", 142, 10));
             Console.WriteLine(cellular_automaton("xx.x..x.xx..x....x.xxx.xxxx", 127, 5));
-            Console.ReadLine();
+            Console.WriteLine("Would you like to enter your own pattern?(Y/N)");
+            while (Console.ReadLine().ToUpper() == "Y")
+            {
+                Console.WriteLine("Would you like to specify your own pattern?(Y/N)");
+                bool valid = false;
+                String patYN = Console.ReadLine().ToUpper();
+                while (patYN == "Y" && !valid)
+                {
+                    valid = true;
+                    int num = -1;
+                    int val = 0;
+                    do
+                    {
+                        Console.WriteLine("Would you like to specify the Minimum Number of Patterns(0), the Greatest Pattern number(1), or the Length of the patterns(2)?");
+                        
+                    } while (!int.TryParse(Console.ReadLine(), out num) && num >= 0 && num < 3);
+                    do
+                    {
+                        Console.WriteLine("Number?");
+
+                    } while (!int.TryParse(Console.ReadLine(), out val) && val > 0);
+                    int size;
+                    int n;
+                    switch (num)
+                    {
+                        case 0:
+                            val = pow2Greater(val);
+                            size = Convert.ToString(NUMPATTERNS-1, 2).Length;
+                            if (size % 2 != 1)
+                            {
+                                valid = false;
+                                break;
+                            }
+                            NUMPATTERNS = val;
+                            SIZEPATTERNS = size;
+                            MAXPATSIZE = (long)Math.Pow(2, NUMPATTERNS);
+                            break;
+                        case 1:
+                            double d = Math.Sqrt(val);
+                            n = (int)d;
+                            if (d != n)
+                            {
+                                valid = false;
+                                break;
+                            }
+                            size = Convert.ToString(n - 1, 2).Length;
+                            if (size % 2 != 1)
+                            {
+                                valid = false;
+                                break;
+                            }
+                            NUMPATTERNS = n;
+                            SIZEPATTERNS = size;
+                            MAXPATSIZE = val;
+                            break;
+                        case 2:
+                            if (val % 2 != 1)
+                            {
+                                valid = false;
+                                break;
+                            }
+                            NUMPATTERNS = (int)Math.Pow(2, val);
+                            MAXPATSIZE = (long)Math.Pow(2, NUMPATTERNS);
+                            break;
+                        default:
+                            Console.WriteLine("Clean up your code, it didn't work");
+                            break;
+
+                    }
+                    if (!valid)
+                    {
+                        Console.WriteLine("Would you like to specify your own pattern?(Y/N)");
+                        patYN = Console.ReadLine().ToUpper();
+                    }
+                }
+                String str = "";
+                long pattern = 0;
+                int generation = 0;
+                bool flag = true;
+                do
+                {
+                    Console.WriteLine("Please enter a string of '.' and 'x'.");
+                    str = Console.ReadLine();
+                } while (!(str.Contains('.') || str.Contains('x')));
+                do
+                {
+                    flag = true;
+                    Console.WriteLine("Please enter a pattern (whole positive)number less than " + MAXPATSIZE + ".");
+                    if(!long.TryParse(Console.ReadLine(), out pattern))
+                        flag = false;
+                    if(flag && (pattern < 0 || pattern > MAXPATSIZE))
+                        flag = false;
+                }while(!flag);
+                do
+                {
+                    Console.WriteLine("Please enter the generations.(whole positive integer)");
+                    
+
+                }while(!int.TryParse(Console.ReadLine(), out generation) || generation < 0);
+                Console.WriteLine(cellular_automaton(str, pattern, generation));
+                Console.WriteLine("Again?(Y/N)");
+            }
         }
-        static string cellular_automaton(String current, int pattern, int generation)
+        static string cellular_automaton(String current, long pattern, int generation)
         {
             setFalse();
             int[] patternNums = getPattern(pattern);
@@ -124,19 +227,23 @@ namespace CellularAutonomaton
             //String[] currentRepX = new String[patternNums.Length];
 
             String final = "";
+            int wings = SIZEPATTERNS / 2;
             for (int i = 0; i < current.Length; i++)
             {
                 String temp = "";
                 try
                 {
-                    temp = current.Substring((i - 1), 3);
+                    temp = current.Substring((i - wings), SIZEPATTERNS);
                 }
                 catch (Exception)
                 {
-                    if (i == 0)
-                        temp = current.Last() + current.Substring(i, 2);
-                    else
-                        temp = current.Substring(i-1, 2) + current.First();
+                    int t = current.Substring(i).Length;
+                    //TODO: fix iterations
+                    bool start = i-wings > 0;
+                    bool index = t < wings+ 1;
+                    String t1 = current.Substring(start ? i - wings : 0, start ? SIZEPATTERNS - t : wings + 1 );
+                    int togo = SIZEPATTERNS - t1.Length;
+                    temp = t1 + current.Substring(start ? 0 : current.Length - togo - 1, togo);
                 }
                 foreach (patVal p in patt)
                 {
@@ -156,7 +263,7 @@ namespace CellularAutonomaton
             //Console.WriteLine(final);
             return cellular_automaton(final, --generation);
         }
-        static int[] getPattern(int i)
+        static int[] getPattern(long i)
         {
             int[] num = new int[NUMPATTERNS];
             int index = 0;
