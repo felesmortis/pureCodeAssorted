@@ -64,15 +64,6 @@ namespace CellularAutonomaton
         static void Main(string[] args)
         {
             init();
-            /*foreach (patVal p in patt)
-            {
-                Console.WriteLine(p.pat + " " + p.val);
-            }
-            foreach (int i in getPattern(255))
-            {
-                Console.WriteLine(i);
-            }*/
-            
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
             //Expected - xxxxxxx.. Actual xxxxxxx..
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
@@ -99,6 +90,10 @@ namespace CellularAutonomaton
             //Expected - ...xxxxx Actual ...xxxxx
             Console.WriteLine(cellular_automaton("...........x...........", 142, 10));
             Console.WriteLine(cellular_automaton("xx.x..x.xx..x....x.xxx.xxxx", 127, 5));
+            user();
+        }
+        static void user()
+        {
             Console.WriteLine("Would you like to enter your own pattern?(Y/N)");
             while (Console.ReadLine().ToUpper() == "Y")
             {
