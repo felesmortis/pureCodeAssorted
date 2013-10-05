@@ -2,3 +2,7 @@ C:\Users\Daneil\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\bin\Deb
 C:\Users\Daneil\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\bin\Debug\cellularAutonomaton.pdb
 C:\Users\Daneil\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\obj\x86\Debug\cellularAutonomaton.exe
 C:\Users\Daneil\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\obj\x86\Debug\cellularAutonomaton.pdb
+C:\Users\Daneil\Documents\GitHub\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\obj\x86\Debug\cellularAutonomaton.exe
+C:\Users\Daneil\Documents\GitHub\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\obj\x86\Debug\cellularAutonomaton.pdb
+C:\Users\Daneil\Documents\GitHub\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\bin\Debug\cellularAutonomaton.exe
+C:\Users\Daneil\Documents\GitHub\pureCodeAssorted\cellularAutonomaton\cellularAutonomaton\bin\Debug\cellularAutonomaton.pdb

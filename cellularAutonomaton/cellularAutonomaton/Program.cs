@@ -64,7 +64,10 @@ namespace CellularAutonomaton
         static void Main(string[] args)
         {
             init();
+            //Console.WriteLine((9+(-1) % (8)));
+            //Console.ReadLine();
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
+            Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 1));
             //Expected - xxxxxxx.. Actual xxxxxxx..
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
             //Expected - .x..x.x.x Actual .x..x.x.x
@@ -155,6 +158,7 @@ namespace CellularAutonomaton
                                 valid = false;
                                 break;
                             }
+                            SIZEPATTERNS = val;
                             NUMPATTERNS = (int)Math.Pow(2, val);
                             MAXPATSIZE = (long)Math.Pow(2, NUMPATTERNS);
                             break;
@@ -193,6 +197,7 @@ namespace CellularAutonomaton
                     
 
                 }while(!int.TryParse(Console.ReadLine(), out generation) || generation < 0);
+                init();
                 Console.WriteLine(cellular_automaton(str, pattern, generation));
                 Console.WriteLine("Again?(Y/N)");
             }
@@ -226,20 +231,50 @@ namespace CellularAutonomaton
             for (int i = 0; i < current.Length; i++)
             {
                 String temp = "";
+                ///FFFFFUUUUU!!!!
                 try
                 {
-                    temp = current.Substring((i - wings), SIZEPATTERNS);
+                    temp = current.Substring((i - 1), 3);
                 }
                 catch (Exception)
                 {
-                    int t = current.Substring(i).Length;
-                    //TODO: fix iterations
-                    bool start = i-wings > 0;
-                    bool index = t < wings+ 1;
-                    String t1 = current.Substring(start ? i - wings : 0, start ? SIZEPATTERNS - t : wings + 1 );
-                    int togo = SIZEPATTERNS - t1.Length;
-                    temp = t1 + current.Substring(start ? 0 : current.Length - togo - 1, togo);
+                    if (i == 0)
+                        temp = current.Last() + current.Substring(i, 2);
+                    else
+                        temp = current.Substring(i - 1, 2) + current.First();
                 }
+                /*if (i - wings < 0)
+                {
+                    String t1 = current.Substring(current.Length + (i - wings));
+                    temp = t1 + current.Substring(0, (SIZEPATTERNS - t1.Length));
+                }
+                else if(i + wings > current.Length - 1)
+                {
+                    String t1 = current.Substring(i);
+                    temp = t1 + current.Substring(0, SIZEPATTERNS - t1.Length);
+                }
+                else
+                    temp = current.Substring((i - wings), SIZEPATTERNS);
+                
+                /*int t = current.Substring(i).Length;
+                //TODO: fix iterations
+                bool start = i-wings > 0;
+                bool index = t < wings+ 1;
+                String t1 = current.Substring(start ? i - wings : 0, start ? SIZEPATTERNS - t : wings + 1 );
+                int togo = SIZEPATTERNS - t1.Length;
+                temp = t1 + current.Substring(start ? 0 : current.Length - togo - 1, togo);
+                if (i - wings > 0)
+                {
+                    String t1 = current.Substring(i);
+                    temp = t1 + current.Substring(0, SIZEPATTERNS-t1.Length);
+                }
+                else
+                {
+                    String t1 = current.Substring(current.Length + (i - wings));
+                    temp = current.Substring(0, (SIZEPATTERNS - t1.Length)) + t1;
+                }*/
+
+                
                 foreach (patVal p in patt)
                 {
                     if (p.pat == temp)
