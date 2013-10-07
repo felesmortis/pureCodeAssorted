@@ -120,6 +120,10 @@ namespace CellularAutonomaton
                     } while (!int.TryParse(Console.ReadLine(), out val) && val > 0);
                     int size;
                     int n;
+                    /*
+                    TODO: Add a class to store numpatterns, sizepatterns and maxpatsize
+                    so they can dynamically change with properties when the others change.
+                    */
                     switch (num)
                     {
                         case 0:
