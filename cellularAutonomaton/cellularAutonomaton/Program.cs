@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StringExtention;
 
-namespace CellularAutonomaton
+namespace cellularAutonomaton
 {
     class Program
     {
-        static int NUMPATTERNS = pow2Greater(8);
-        static int SIZEPATTERNS = Convert.ToString(NUMPATTERNS - 1, 2).Length;
-        static long MAXPATSIZE = (int)Math.Pow(2, NUMPATTERNS);
+        static mainProps props = new mainProps();
         struct patVal
         {
             public String pat;
@@ -17,35 +16,27 @@ namespace CellularAutonomaton
             public bool repX;
         };
         
-        static patVal[] patt = new patVal[NUMPATTERNS];
-        static int pow2Greater(int num)
-        {
-            int i = 1;
-            while (i < num)
-            {
-                i = i << 1;
-            }
-            return i;
-        }
+        static patVal[] patt = new patVal[props.NUMPATTERNS];
         static void init()
         {
+            patt = new patVal[props.NUMPATTERNS];
             //int i = 1;
-            String[] list = new String[NUMPATTERNS];
-            for (int i = 0; i < NUMPATTERNS; i++)
+            String[] list = new String[props.NUMPATTERNS];
+            for (int i = 0; i < props.NUMPATTERNS; i++)
             {
                 String temp = Convert.ToString(i, 2).Replace('0', '.').Replace('1', 'x');
                 int n = temp.Length;
 
-                if (n < SIZEPATTERNS)
+                if (n < props.SIZEPATTERNS)
                 {
-                    for (int l = n; l < SIZEPATTERNS; l++)
+                    for (int l = n; l < props.SIZEPATTERNS; l++)
                         temp = '.' + temp;
                 }
                 list[i] = temp;
-                Console.WriteLine(temp);
+                //Console.WriteLine(temp);
             }
             int pow = 1;
-            for (int i = 0; i < NUMPATTERNS; i++)
+            for (int i = 0; i < props.NUMPATTERNS; i++)
             {
                 patt[i].pat = list[i];
                 patt[i].val = pow;
@@ -67,7 +58,6 @@ namespace CellularAutonomaton
             //Console.WriteLine((9+(-1) % (8)));
             //Console.ReadLine();
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 2));
-            Console.WriteLine(cellular_automaton(".x.x.x.x.", 17, 1));
             //Expected - xxxxxxx.. Actual xxxxxxx..
             Console.WriteLine(cellular_automaton(".x.x.x.x.", 249, 3));
             //Expected - .x..x.x.x Actual .x..x.x.x
@@ -127,44 +117,34 @@ namespace CellularAutonomaton
                     switch (num)
                     {
                         case 0:
-                            val = pow2Greater(val);
-                            size = Convert.ToString(NUMPATTERNS-1, 2).Length;
-                            if (size % 2 != 1)
+                            try
+                            {
+                                props.NUMPATTERNS = val;
+                            }
+                            catch (Exception ex)
                             {
                                 valid = false;
-                                break;
                             }
-                            NUMPATTERNS = val;
-                            SIZEPATTERNS = size;
-                            MAXPATSIZE = (long)Math.Pow(2, NUMPATTERNS);
                             break;
                         case 1:
-                            double d = Math.Sqrt(val);
-                            n = (int)d;
-                            if (d != n)
+                            try
+                            {
+                                props.MAXPATSIZE = val;
+                            }
+                            catch (Exception ex)
                             {
                                 valid = false;
-                                break;
                             }
-                            size = Convert.ToString(n - 1, 2).Length;
-                            if (size % 2 != 1)
-                            {
-                                valid = false;
-                                break;
-                            }
-                            NUMPATTERNS = n;
-                            SIZEPATTERNS = size;
-                            MAXPATSIZE = val;
                             break;
                         case 2:
-                            if (val % 2 != 1)
+                            try
+                            {
+                                props.SIZEPATTERNS = val;
+                            }
+                            catch (Exception ex)
                             {
                                 valid = false;
-                                break;
                             }
-                            SIZEPATTERNS = val;
-                            NUMPATTERNS = (int)Math.Pow(2, val);
-                            MAXPATSIZE = (long)Math.Pow(2, NUMPATTERNS);
                             break;
                         default:
                             Console.WriteLine("Clean up your code, it didn't work");
@@ -189,10 +169,10 @@ namespace CellularAutonomaton
                 do
                 {
                     flag = true;
-                    Console.WriteLine("Please enter a pattern (whole positive)number less than " + MAXPATSIZE + ".");
+                    Console.WriteLine("Please enter a pattern (whole positive)number less than " + props.MAXPATSIZE + ".");
                     if(!long.TryParse(Console.ReadLine(), out pattern))
                         flag = false;
-                    if(flag && (pattern < 0 || pattern > MAXPATSIZE))
+                    if (flag && (pattern < 0 || pattern > props.MAXPATSIZE))
                         flag = false;
                 }while(!flag);
                 do
@@ -224,61 +204,16 @@ namespace CellularAutonomaton
         }
         static string cellular_automaton(String current, int generation)
         {
-            
             if (generation < 1)
                 return current;
             
             //String[] currentRepX = new String[patternNums.Length];
 
             String final = "";
-            int wings = SIZEPATTERNS / 2;
+            int wings = props.SIZEPATTERNS / 2;
             for (int i = 0; i < current.Length; i++)
             {
-                String temp = "";
-                ///FFFFFUUUUU!!!!
-                try
-                {
-                    temp = current.Substring((i - 1), 3);
-                }
-                catch (Exception)
-                {
-                    if (i == 0)
-                        temp = current.Last() + current.Substring(0, );
-                    else
-                        temp = current.Substring(i - wings) + current.First();
-                }
-                /*if (i - wings < 0)
-                {
-                    String t1 = current.Substring(current.Length + (i - wings));
-                    temp = t1 + current.Substring(0, (SIZEPATTERNS - t1.Length));
-                }
-                else if(i + wings > current.Length - 1)
-                {
-                    String t1 = current.Substring(i);
-                    temp = t1 + current.Substring(0, SIZEPATTERNS - t1.Length);
-                }
-                else
-                    temp = current.Substring((i - wings), SIZEPATTERNS);
-                
-                /*int t = current.Substring(i).Length;
-                //TODO: fix iterations
-                bool start = i-wings > 0;
-                bool index = t < wings+ 1;
-                String t1 = current.Substring(start ? i - wings : 0, start ? SIZEPATTERNS - t : wings + 1 );
-                int togo = SIZEPATTERNS - t1.Length;
-                temp = t1 + current.Substring(start ? 0 : current.Length - togo - 1, togo);
-                if (i - wings > 0)
-                {
-                    String t1 = current.Substring(i);
-                    temp = t1 + current.Substring(0, SIZEPATTERNS-t1.Length);
-                }
-                else
-                {
-                    String t1 = current.Substring(current.Length + (i - wings));
-                    temp = current.Substring(0, (SIZEPATTERNS - t1.Length)) + t1;
-                }*/
-
-                
+                string temp = current.SubstringLoop(i - wings, props.SIZEPATTERNS);
                 foreach (patVal p in patt)
                 {
                     if (p.pat == temp)
@@ -299,7 +234,7 @@ namespace CellularAutonomaton
         }
         static int[] getPattern(long i)
         {
-            int[] num = new int[NUMPATTERNS];
+            int[] num = new int[props.NUMPATTERNS];
             int index = 0;
             int n = 1;
             while (i > 0)
@@ -330,6 +265,120 @@ namespace CellularAutonomaton
                 finArr[i] = arr[i];
             }
             return finArr;
+        }
+    }
+
+
+    //*******************************************************************************
+    class mainProps
+    {
+        private int numPatterns;
+        private int sizePatterns;
+        private long maxPatSize;
+        public mainProps()
+        {
+            numPatterns = 8;
+            sizePatterns = 3;
+            maxPatSize = 256;
+        }
+        static int pow2Greater(int num)
+        {
+            int i = 1;
+            while (i < num)
+            {
+                i = i << 1;
+            }
+            return i;
+        }
+        public int NUMPATTERNS
+        {
+            get
+            {
+                return numPatterns;
+            }
+            set
+            {
+                int val = pow2Greater(value);
+                int size = Convert.ToString(NUMPATTERNS - 1, 2).Length;
+                if (size % 2 == 1)
+                {
+                    numPatterns = val;
+                    sizePatterns = size;
+                    maxPatSize = (long)Math.Pow(2, NUMPATTERNS);
+                }
+                else throw new Exception("Number of patterns does not correspond to an odd integer value");
+            }
+        }
+        public int SIZEPATTERNS
+        {
+            get
+            {
+                return sizePatterns;
+            }
+            set
+            {
+                if (value % 2 == 1)
+                {
+                    sizePatterns = value;
+                    numPatterns = (int)Math.Pow(2, value);
+                    maxPatSize = (long)Math.Pow(2, numPatterns);
+                }
+                else throw new Exception();
+                
+            }
+        }
+        public long MAXPATSIZE
+        {
+            get
+            {
+                return maxPatSize;
+            }
+            set
+            {
+                double d = Math.Sqrt(value);
+                int n = (int)d;
+                if (d == n)
+                {
+                    int size = Convert.ToString(n - 1, 2).Length;
+                    if (size % 2 == 1)
+                    {
+                        numPatterns = n;
+                        sizePatterns = size;
+                        maxPatSize = value;
+                    }
+                    else throw new Exception();
+
+                }
+                else throw new Exception();
+                
+            }
+        }
+    }
+}
+namespace StringExtention
+{
+    public static class StrLoop
+    {
+        public static string SubstringLoop(this String ring, int startIndex)
+        {
+            return SubstringLoop(ring, startIndex, ring.Length - startIndex);
+        }
+        public static string SubstringLoop(this String ring, int startIndex, int length)
+        {
+            string result = "";
+            for (int i = 0; i < length; i++)
+            {
+                result += ring.ElementAt(getIndex(ring, startIndex + i));
+            }
+            return result;
+        }
+        private static int getIndex(this String ring, int i)
+        {
+            if (i < 0)
+            {
+                return ring.Length - (Math.Abs(i) % ring.Length);
+            }
+            return ((i) % (ring.Length));
         }
     }
 }
