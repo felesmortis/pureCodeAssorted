@@ -243,9 +243,9 @@ namespace CellularAutonomaton
                 catch (Exception)
                 {
                     if (i == 0)
-                        temp = current.Last() + current.Substring(i, 2);
+                        temp = current.Last() + current.Substring(0, );
                     else
-                        temp = current.Substring(i - 1, 2) + current.First();
+                        temp = current.Substring(i - wings) + current.First();
                 }
                 /*if (i - wings < 0)
                 {
